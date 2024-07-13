@@ -1,0 +1,120 @@
+{% load static %}      
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task List</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column; /* Use flex column layout */
+            min-height: 100vh; /* Ensure the body covers the full viewport height */
+        }
+        .navbar {
+            background-color: #333;
+            color: white;
+            display: flex;
+            justify-content: flex-start; /* Align items to the start */
+            padding: 10px;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            margin-right: 10px;
+            transition: background-color 0.3s;
+        }
+        .navbar a:hover {
+            background-color: #555;
+        }
+        .container {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column; /* Align items in column */
+            align-items: center; /* Center align items horizontally */
+            text-align: center; /* Center align text */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        .logo {
+            width: 150px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        .edit-btn, .delete-btn {
+            padding: 5px 10px;
+            cursor: pointer;
+            color: #007bff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .edit-btn:hover, .delete-btn:hover {
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="{% url 'add_task' %}">Add Task</a>
+        <a href="{% url 'my_task' %}">My Tasks</a>
+        <a href="{% url 'my_profile' %}">My Profile</a>
+    </div>
+
+    <div class="container">
+        <img src="{% static 'm.jpg' %}" alt="Company Logo" class="logo">
+        <h2>Task List</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Task Name</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Assigned By</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                <tr>
+                    <td>{{ task.task_name }}</td>
+                    <td>{{ task.due_date }}</td>
+                    <td>{{ task.time }}</td>
+                    <td>{{ task.assigned_by }}</td>
+                    <td>{{ task.status }}</td>
+                    <td>
+                        <a href="{% url 'edit' task.id %}" class="edit-btn">Edit</a>
+                        <a href="{% url 'delete' task.id %}" class="delete-btn">Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">No tasks found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
